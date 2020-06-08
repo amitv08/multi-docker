@@ -10,9 +10,9 @@ script:
   
 after_success:
   - docker build -t amitv08/multi-client -f ./client/Dockerfile.dev ./client
-  - docker build -t amitv08/multi-nginx -f ./client/Dockerfile.dev ./nginx
-  - docker build -t amitv08/multi-server -f ./client/Dockerfile.dev ./server
-  - docker build -t amitv08/multi-worker -f ./client/Dockerfile.dev ./worker
+  - docker build -t amitv08/multi-nginx -f ./nginx/Dockerfile.dev ./nginx
+  - docker build -t amitv08/multi-server -f ./server/Dockerfile.dev ./server
+  - docker build -t amitv08/multi-worker -f ./worker/Dockerfile.dev ./worker
 # Login to docker hub using CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin    
 # Push images to Docker Hub
