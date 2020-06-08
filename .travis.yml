@@ -1,0 +1,23 @@
+sudo: required
+services:
+  -docker
+
+before_install:
+  - docker build -t amitv08/react-test -f ./client/Dockerfile.dev ./client
+  
+script:
+  - docker run -e CI=true amitv08/react-test npm test
+  
+after_success:
+  - docker build -t amitv08/multi-client -f ./client/Dockerfile.dev ./client
+  - docker build -t amitv08/multi-nginx -f ./client/Dockerfile.dev ./nginx
+  - docker build -t amitv08/multi-server -f ./client/Dockerfile.dev ./server
+  - docker build -t amitv08/multi-worker -f ./client/Dockerfile.dev ./worker
+# Login to docker hub using CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin    
+# Push images to Docker Hub
+  - docker push amitv08/multi-client
+  - docker push amitv08/multi-nginx
+  - docker push amitv08/multi-server
+  - docker push amitv08/multi-worker
+  
